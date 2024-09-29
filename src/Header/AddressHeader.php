@@ -9,8 +9,11 @@ namespace ZBateson\MailMimeParser\Header;
 
 use Psr\Log\LoggerInterface;
 use ZBateson\MailMimeParser\Header\Consumer\AddressBaseConsumerService;
+use ZBateson\MailMimeParser\Header\Consumer\IConsumerService;
 use ZBateson\MailMimeParser\Header\Part\AddressGroupPart;
 use ZBateson\MailMimeParser\Header\Part\AddressPart;
+use ZBateson\MailMimeParser\Header\Part\MimeToken;
+use ZBateson\MailMimeParser\Header\Part\MimeTokenPartFactory;
 use ZBateson\MailMimeParser\MailMimeParser;
 
 /**
@@ -25,7 +28,7 @@ use ZBateson\MailMimeParser\MailMimeParser;
  *
  * @author Zaahid Bateson
  */
-class AddressHeader extends AbstractHeader
+class AddressHeader extends MimeEncodedHeader
 {
     /**
      * @var AddressPart[] array of addresses, included all addresses contained
@@ -42,11 +45,13 @@ class AddressHeader extends AbstractHeader
         string $name,
         string $value,
         ?LoggerInterface $logger = null,
+        ?MimeTokenPartFactory $mimeTokenPartFactory = null,
         ?AddressBaseConsumerService $consumerService = null
     ) {
         $di = MailMimeParser::getGlobalContainer();
         parent::__construct(
             $logger ?? $di->get(LoggerInterface::class),
+            $mimeTokenPartFactory ?? $di->get(MimeTokenPartFactory::class),
             $consumerService ?? $di->get(AddressBaseConsumerService::class),
             $name,
             $value

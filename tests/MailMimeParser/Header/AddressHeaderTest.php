@@ -24,6 +24,9 @@ class AddressHeaderTest extends TestCase
     // @phpstan-ignore-next-line
     protected $consumerService;
 
+    // @phpstan-ignore-next-line
+    protected $mpf;
+
     private $logger;
 
     protected function setUp() : void
@@ -64,11 +67,12 @@ class AddressHeaderTest extends TestCase
             ->setConstructorArgs([$this->logger, $pf, $acs])
             ->setMethods()
             ->getMock();
+        $this->mpf = $mpf;
     }
 
     private function newAddressHeader($name, $value)
     {
-        return new AddressHeader($name, $value, $this->logger, $this->consumerService);
+        return new AddressHeader($name, $value, $this->logger, $this->mpf, $this->consumerService);
     }
 
     public function testEmptyHeader() : void
