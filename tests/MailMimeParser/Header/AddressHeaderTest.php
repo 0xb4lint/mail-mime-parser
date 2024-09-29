@@ -127,6 +127,18 @@ class AddressHeaderTest extends TestCase
         $this->assertEquals('kilgoretrout@"ilium".ny.us', $addresses[0]->getEmail());
     }
 
+    public function testMultipleEncodingSingleAddress() : void
+    {
+        $header = $this->newAddressHeader(
+            'To',
+            '=?ISO-8859-1?Q?f=F3=F3?=  =?UTF-8?Q?b=C3=A1r?= <test@example.com>'
+        );
+        $addresses = $header->getParts();
+        $this->assertCount(1, $addresses);
+        $this->assertEquals('fóó  bár', $addresses[0]->getName());
+        $this->assertEquals('test@example.com', $addresses[0]->getEmail());
+    }
+
     public function testSingleAddressWithEscapedToken() : void
     {
         $header = $this->newAddressHeader('From', '\"Kool Aid\" <koolaid@dontdrinkit.com>');
