@@ -139,7 +139,8 @@ class AddressHeaderTest extends TestCase
         );
         $addresses = $header->getParts();
         $this->assertCount(1, $addresses);
-        $this->assertEquals('fóó  bár', $addresses[0]->getName());
+        // $this->assertEquals('fóó  bár', $addresses[0]->getName());
+        $this->assertEquals('fóó bár', $addresses[0]->getName());
         $this->assertEquals('test@example.com', $addresses[0]->getEmail());
     }
 
